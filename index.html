@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MH SOUND - Producción Musical Remota</title>
+    <!-- Carga de Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuración de la fuente Inter y colores de Tailwind --><style>
+        /* Importación de las tipografías: Orbitron, Bebas Neue, Montserrat, Inter y RAJDHANI */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Orbitron:wght@400..900&family=Bebas+Neue&family=Montserrat:wght@400;700&family=Rajdhani:wght@500;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050508; /* Base negro casi puro */
+            
+            /* --- FONDO TEXTURIZADO "DARK ACOUSTIC MESH" --- */
+            /* Inspirado en rejillas de micrófonos y paneles acústicos de alta gama */
+            background-image: 
+                /* Capa 1: Viñeta suave para dar profundidad (Luz central) */
+                radial-gradient(circle at 50% 30%, rgba(20, 20, 30, 0) 0%, rgba(0, 0, 0, 0.8) 100%),
+                /* Capa 2: Patrón de malla intercalada (Simula metal perforado) */
+                radial-gradient(#1c1c26 1.5px, transparent 1.5px), 
+                radial-gradient(#1c1c26 1.5px, #050508 1.5px);
+            
+            /* Tamaño y posición para crear el intercalado perfecto */
+            background-size: 100% 100%, 20px 20px, 20px 20px;
+            background-position: 0 0, 0 0, 10px 10px;
+            
+            background-attachment: fixed; /* El fondo se mantiene estático (Premium feel) */
+            color: #ffffff;
+            min-height: 100vh;
+        }
+        
+        /* Nuevo Color de Acento: Verde Fluorescente */
+        .text-accent {
+            color: #39ff14; /* Verde fluorescente */
+        }
+        .bg-accent {
+            background-color: #39ff14;
+        }
+        .bg-card-dark {
+            /* Fondo de tarjeta ligeramente translúcido para integrarse con el nuevo fondo */
+            background-color: rgba(20, 20, 25, 0.7); /* Tono más neutro para combinar con la malla */
+            backdrop-filter: blur(12px); /* Efecto de cristal moderno */
+            border: 1px solid rgba(255, 255, 255, 0.05); /* Borde sutil */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Sombra profunda para elevar la tarjeta del fondo */
+        }
+        .shadow-glow {
+            /* Sombra ajustada al nuevo color verde fluorescente */
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.5); 
+        }
+
+        /* Estilos para el Logo de Texto MH SOUND */
+        .mh-sound-logo {
+            font-family: 'Inter', sans-serif; 
+            font-weight: 900; 
+            font-size: 2.25rem; 
+            line-height: 1;
+            letter-spacing: -0.05em; 
+            color: #39ff14; 
+            text-shadow: 
+                0 0 5px rgba(57, 255, 20, 0.6), 
+                0 0 10px rgba(57, 255, 20, 0.4), 
+                0 0 20px rgba(57, 255, 20, 0.2); 
+            position: relative;
+            display: inline-block; 
+            transform: skewX(-5deg); 
+        }
+
+        .mh-sound-logo::after {
+            content: 'SOUND';
+            position: absolute;
+            left: 0;
+            bottom: -0.2em; 
+            font-size: 0.5em; 
+            font-weight: 500; 
+            color: #ccc; 
+            letter-spacing: 0.1em; 
+            transform: skewX(5deg); 
+            opacity: 0.8;
+        }
+
+        /* Ajustes para el tamaño del logo en móviles si es necesario */
+        @media (max-width: 768px) {
+            .mh-sound-logo {
+                font-size: 1.75rem; 
+            }
+        }
+        
+        /* --- ESTILOS DE TIPOGRAFÍA --- */
+        .font-title-main {
+            font-family: 'Orbitron', sans-serif; /* Futurista / Digital */
+            font-weight: 700;
+        }
+        .font-title-accent {
+            font-family: 'Bebas Neue', sans-serif; /* Condensada / Impactante */
+            font-weight: 400;
+            letter-spacing: 0.15em; 
+            transform: skewX(-5deg); /* Le da un movimiento dinámico */
+            display: inline-block; /* Necesario para el transform */
+        }
+        .font-subtitle {
+            font-family: 'Montserrat', sans-serif; /* Clara / Moderna */
+        }
+        /* Nueva fuente técnica para la sección de tecnología */
+        .font-tech {
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        /* --- ANIMACIONES Y EFECTOS --- */
+
+        /* Efecto de subrayado para enlaces de navegación */
+        .nav-link-hover {
+            position: relative;
+            display: inline-block; 
+        }
+        .nav-link-hover::after {
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -2px; 
+            left: 0;
+            background-color: #39ff14; 
+            transition: width 0.3s ease-out; 
+        }
+        .nav-link-hover:hover::after {
+            width: 100%; 
+        }
+
+        /* Estilos DESTACADOS para Iconos de Redes Sociales */
+        .social-icon {
+            color: #ffffff; /* Blanco puro por defecto para destacar */
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 0 2px rgba(0,0,0,0.5)); /* Sombra sutil para legibilidad */
+        }
+        
+        .social-icon:hover {
+            color: #39ff14; /* Verde MH al pasar el mouse */
+            transform: scale(1.2); /* Crece un poco más */
+            filter: drop-shadow(0 0 8px rgba(57, 255, 20, 0.8)); /* Efecto de NEÓN intenso */
+        }
+
+        /* Animación de brillo para el botón principal */
+        @keyframes pulse-glow {
+            0% {
+                box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 25px rgba(57, 255, 20, 0.9), 0 0 50px rgba(57, 255, 20, 0.3);
+            }
+            100% {
+                box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+            }
+        }
+
+        .btn-primary-glow-hover:hover {
+            animation: pulse-glow 1.5s infinite ease-in-out; 
+        }
+
+        /* Nueva clase para las tarjetas de servicio con animacion */
+        .service-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .service-card:hover {
+            transform: scale(1.05); 
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.4); /* Brillo ajustado */
+        }
+
+        /* --- ESTILOS DEL VISUALIZADOR DE AUDIO (CSS PURO) --- */
+        .equalizer-bar-container {
+            height: 100px; 
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 0 10px;
+            background: rgba(255, 255, 255, 0.02); /* Fondo sutil más limpio */
+            border-radius: 8px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5); /* Profundidad interna */
+            border: 1px solid rgba(255, 255, 255, 0.05); /* Borde fino premium */
+        }
+
+        /* Animación aleatoria simulada con CSS */
+        @keyframes wave-random {
+            0% { height: 10%; }
+            20% { height: 60%; }
+            40% { height: 30%; }
+            60% { height: 90%; }
+            80% { height: 40%; }
+            100% { height: 10%; }
+        }
+
+        .equalizer-bar {
+            width: 6px; /* Un poco más ancho para mejor visibilidad */
+            background-color: #39ff14; 
+            border-radius: 3px;
+            box-shadow: 0 0 8px rgba(57, 255, 20, 0.6);
+            animation: wave-random 1s ease-in-out infinite;
+        }
+
+        /* Asignamos duraciones y retrasos aleatorios */
+        .equalizer-bar:nth-child(1) { animation-duration: 1.1s; animation-delay: -0.2s; }
+        .equalizer-bar:nth-child(2) { animation-duration: 1.3s; animation-delay: -0.5s; }
+        .equalizer-bar:nth-child(3) { animation-duration: 0.9s; animation-delay: -0.8s; }
+        .equalizer-bar:nth-child(4) { animation-duration: 1.5s; animation-delay: -0.1s; }
+        .equalizer-bar:nth-child(5) { animation-duration: 1.2s; animation-delay: -0.3s; }
+        .equalizer-bar:nth-child(6) { animation-duration: 1.4s; animation-delay: -0.6s; }
+        .equalizer-bar:nth-child(7) { animation-duration: 1.0s; animation-delay: -0.9s; }
+        .equalizer-bar:nth-child(8) { animation-duration: 1.6s; animation-delay: -0.2s; }
+        .equalizer-bar:nth-child(9) { animation-duration: 1.1s; animation-delay: -0.4s; }
+        .equalizer-bar:nth-child(10) { animation-duration: 1.3s; animation-delay: -0.7s; }
+        .equalizer-bar:nth-child(11) { animation-duration: 0.9s; animation-delay: -0.1s; }
+        .equalizer-bar:nth-child(12) { animation-duration: 1.5s; animation-delay: -0.5s; }
+        .equalizer-bar:nth-child(13) { animation-duration: 1.2s; animation-delay: -0.8s; }
+        .equalizer-bar:nth-child(14) { animation-duration: 1.4s; animation-delay: -0.3s; }
+        .equalizer-bar:nth-child(15) { animation-duration: 1.0s; animation-delay: -0.6s; }
+        .equalizer-bar:nth-child(16) { animation-duration: 1.6s; animation-delay: -0.9s; }
+        .equalizer-bar:nth-child(17) { animation-duration: 1.1s; animation-delay: -0.2s; }
+        .equalizer-bar:nth-child(18) { animation-duration: 1.3s; animation-delay: -0.4s; }
+        .equalizer-bar:nth-child(19) { animation-duration: 0.9s; animation-delay: -0.7s; }
+        .equalizer-bar:nth-child(20) { animation-duration: 1.5s; animation-delay: -0.1s; }
+
+        /* --- ESTILOS AVANZADOS PARA EL AI LAB --- */
+        .ai-panel {
+            background: linear-gradient(145deg, rgba(20, 20, 25, 0.9), rgba(10, 10, 15, 0.95));
+            border: 1px solid rgba(57, 255, 20, 0.1);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(57, 255, 20, 0.02);
+            backdrop-filter: blur(10px);
+        }
+
+        .ai-input {
+            background-color: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .ai-input:focus {
+            border-color: #39ff14;
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
+            background-color: rgba(0, 0, 0, 0.8);
+            outline: none;
+        }
+        .ai-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Contenedor de resultados estilo "HUD" */
+        .ai-hud-display {
+            background-color: rgba(5, 10, 5, 0.9);
+            border-left: 3px solid #39ff14;
+            border-top: 1px solid rgba(57, 255, 20, 0.1);
+            border-bottom: 1px solid rgba(57, 255, 20, 0.1);
+            border-right: 1px solid rgba(57, 255, 20, 0.1);
+            background-image: 
+                linear-gradient(rgba(57, 255, 20, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(57, 255, 20, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
+        }
+
+        .loading-dots::after {
+            content: ' .';
+            animation: dots 1s steps(5, end) infinite;
+        }
+        @keyframes dots {
+            0%, 20% { color: rgba(0,0,0,0); text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0);}
+            40% { color: #39ff14; text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0);}
+            60% { text-shadow: .25em 0 0 #39ff14, .5em 0 0 rgba(0,0,0,0);}
+            80%, 100% { text-shadow: .25em 0 0 #39ff14, .5em 0 0 #39ff14;}
+        }
+
+    </style>
+</head>
+<body class="text-white">
+
+    <!-- Navbar Fija --><header class="sticky top-0 z-50 bg-card-dark backdrop-blur-md shadow-2xl border-b border-white/10">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <!-- Contenedor del Logo y Redes Sociales --><div class="flex items-center space-x-6">
+                <!-- Logo MH SOUND --><a href="#hero" class="mh-sound-logo interactive-element">MH</a>
+                
+                <!-- Contenedor de Redes Sociales DESTACADO --><div class="hidden sm:flex space-x-4 items-center border-l border-gray-600 pl-6 h-10">
+                    <!-- Instagram (LOGO SOLIDO) --><a href="TU_URL_DE_INSTAGRAM_AQUI" target="_blank" class="social-icon w-6 h-6 interactive-element" title="Instagram">
+                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z" />
+                        </svg>
+                    </a>
+                    <!-- Facebook --><a href="TU_URL_DE_FACEBOOK_AQUI" target="_blank" class="social-icon w-6 h-6 interactive-element" title="Facebook">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                    </a>
+                    <!-- LinkedIn --><a href="TU_URL_DE_LINKEDIN_AQUI" target="_blank" class="social-icon w-6 h-6 interactive-element" title="LinkedIn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM4 9H2v12h4V9zM4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="hidden md:flex space-x-8">
+                <!-- Enlaces de navegación --><a href="#servicios" class="text-gray-300 hover:text-accent transition duration-300 nav-link-hover interactive-element">Servicios</a>
+                <a href="#diferencial" class="text-gray-300 hover:text-accent transition duration-300 nav-link-hover interactive-element">Diferencial</a>
+                <a href="#tecnologia" class="text-gray-300 hover:text-accent transition duration-300 nav-link-hover interactive-element">Tecnología</a>
+                <!-- Botón de Contacto --><a href="#contacto" class="text-black bg-accent px-4 py-1 rounded-full hover:bg-[#20c000] transition duration-300 font-semibold transform hover:scale-105 shadow-lg shadow-accent/50 interactive-element">Contacto</a>
+                <!-- Enlace a AI Lab -->
+                <a href="#ai-zone" class="text-gray-300 hover:text-accent transition duration-300 nav-link-hover interactive-element">AI Lab</a>
+            </div>
+            <!-- Botón de menú móvil --><button id="mobile-menu-button" class="md:hidden text-gray-300 focus:outline-none interactive-element">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Menú Móvil --><div id="mobile-menu" class="hidden md:hidden fixed inset-0 bg-card-dark z-40 p-6">
+        <div class="flex justify-end">
+            <button id="close-menu-button" class="text-gray-300 focus:outline-none interactive-element">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <div class="flex flex-col space-y-6 mt-8 text-center text-xl">
+            <a href="#servicios" class="text-gray-300 hover:text-accent transition duration-300 menu-item interactive-element">Servicios</a>
+            <a href="#diferencial" class="text-gray-300 hover:text-accent transition duration-300 menu-item interactive-element">Diferencial</a>
+            <a href="#tecnologia" class="text-gray-300 hover:text-accent transition duration-300 menu-item interactive-element">Tecnología</a>
+            <a href="#contacto" class="text-black bg-accent px-4 py-2 rounded-full hover:bg-[#20c000] transition duration-300 menu-item font-semibold interactive-element">Contacto</a>
+            <a href="#ai-zone" class="text-gray-300 hover:text-accent transition duration-300 menu-item interactive-element">AI Lab</a>
+        </div>
+    </div>
+
+    <main class="max-w-7xl mx-auto">
+        <!-- Sección HERO --><section id="hero" class="relative overflow-hidden pt-20 pb-10 md:pt-32 md:pb-20 px-4 sm:px-6 lg:px-8 text-center">
+            <div class="relative z-10">
+                <h1 class="text-4xl sm:text-5xl lg:text-7xl font-extrabold mb-4 leading-tight">
+                    <!-- Cambio de posición: REMOTA ahora está en el título principal -->
+                    <span class="font-title-main block uppercase">Producción Musical Remota</span>
+                    <!-- Subtítulo ajustado -->
+                    <span class="font-title-accent text-accent block lg:inline uppercase">De Alto Nivel</span>
+                </h1>
+                
+                <p class="font-subtitle text-lg sm:text-xl text-gray-400 mb-10 max-w-3xl mx-auto leading-relaxed">
+                    Lleva tu sonido al estándar de la industria. Mezcla y masterización con la <strong class="text-white">rapidez</strong> y <strong class="text-white">precisión</strong> de un estudio de élite.
+                </p>
+                
+                <!-- Botón principal (Enlace normal, sin audio JS) --><a href="#contacto" class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full text-black bg-accent hover:bg-[#20c000] transition duration-300 shadow-lg shadow-accent/50 transform hover:scale-105 font-semibold btn-primary-glow-hover interactive-element">
+                    ¡Hablemos de tu proyecto!
+                </a>
+            </div>
+
+            <!-- Visualizador de Audio Estilo Decorativo (CSS Animation) --><div class="relative z-10 mt-16 flex justify-center">
+                <div class="equalizer-bar-container">
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                    <div class="equalizer-bar"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Servicios --><section id="servicios" class="py-20 px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 font-subtitle">Nuestros Servicios de Audio</h2>
+            <!-- Cuadrícula ajustada a 4 columnas en pantallas grandes -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- 1. Tarjeta de Producción Musical (Nueva) -->
+                <div class="bg-card-dark p-6 rounded-xl shadow-xl hover:shadow-glow transition duration-500 border-2 border-transparent hover:border-accent service-card interactive-element">
+                    <div class="text-accent text-4xl mb-4 flex justify-center">
+                        <!-- SVG Icon: Nota Musical / Composición -->
+                        <svg class="w-12 h-12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18V5l12-2v13"></path>
+                            <circle cx="6" cy="18" r="3"></circle>
+                            <circle cx="18" cy="16" r="3"></circle>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-center font-subtitle">Producción Musical</h3>
+                    <p class="text-gray-400 text-center font-body">Transformamos tus ideas en canciones completas. Arreglos, instrumentación y dirección creativa para potenciar tu identidad.</p>
+                </div>
+
+                <!-- 2. Tarjeta de Mezcla -->
+                <div class="bg-card-dark p-6 rounded-xl shadow-xl hover:shadow-glow transition duration-500 border-2 border-transparent hover:border-accent service-card interactive-element">
+                    <div class="text-accent text-4xl mb-4 flex justify-center">
+                        <svg class="w-12 h-12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="8" y2="3"></line>
+                            <line x1="16" y1="21" x2="16" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="17"></line>
+                            <path d="M12 14v-4"></path>
+                            <path d="M12 7v-4"></path>
+                            <circle cx="8" cy="18" r="1.5" fill="currentColor"></circle>
+                            <circle cx="16" cy="10" r="1.5" fill="currentColor"></circle>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-center font-subtitle">Mezcla Profesional</h3>
+                    <p class="text-gray-400 text-center font-body">Balanceamos, editamos y procesamos tus pistas para lograr una cohesión sonora impecable y un sonido limpio y potente.</p>
+                </div>
+
+                <!-- 3. Tarjeta de Masterización -->
+                <div class="bg-card-dark p-6 rounded-xl shadow-xl hover:shadow-glow transition duration-500 border-2 border-transparent hover:border-accent service-card interactive-element">
+                    <div class="text-accent text-4xl mb-4 flex justify-center">
+                        <svg class="w-12 h-12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 12H5L8 20L12 4L16 20L19 12H22"></path>
+                            <line x1="9" y1="12" x2="15" y2="12" stroke-dasharray="2 4"></line>
+                            <circle cx="12" cy="12" r="10"></circle>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-center font-subtitle">Masterización Final</h3>
+                    <p class="text-gray-400 text-center font-body">Aseguramos que tu música cumpla con los estándares de volumen y calidad de las principales plataformas de streaming.</p>
+                </div>
+
+                <!-- 4. Tarjeta de Revisión Remota -->
+                <div class="bg-card-dark p-6 rounded-xl shadow-xl hover:shadow-glow transition duration-500 border-2 border-transparent hover:border-accent service-card interactive-element">
+                    <div class="text-accent text-4xl mb-4 flex justify-center">
+                         <svg class="w-12 h-12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            <rect x="15" y="15" width="8" height="6" rx="1" ry="1"></rect>
+                            <line x1="15" y1="17.5" x2="23" y2="17.5" stroke-dasharray="2 2"></line>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-center font-subtitle">Sesiones Remotas en Vivo</h3>
+                    <p class="text-gray-400 text-center font-body">Utilizamos tecnología de punta (Zoom + Audiomovers Listento) para sesiones de revisión en tiempo real.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Diferencial --><section id="diferencial" class="py-20 px-4 sm:px-6 lg:px-8 bg-black/30">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <!-- Diferencial: Rapidez --><div class="text-center md:text-left">
+                    <h2 class="text-4xl font-extrabold mb-4 text-accent">Rapidez Excepcional</h2>
+                    <p class="text-xl text-gray-300 mb-6">
+                        Sabemos que el tiempo es oro en la industria musical. Nuestro flujo de trabajo optimizado y nuestra dedicación 100% remota nos permiten ofrecer <strong class="text-white">tiempos de entrega líderes en el mercado.</strong>
+                    </p>
+                    <ul class="space-y-3 text-gray-400">
+                        <li class="flex items-center justify-center md:justify-start"><span class="text-accent mr-3">✓</span> Revisión inicial en menos de 24 horas.</li>
+                        <li class="flex items-center justify-center md:justify-start"><span class="text-accent mr-3">✓</span> Comunicación directa y sin demoras.</li>
+                        <li class="flex items-center justify-center md:justify-start"><span class="text-accent mr-3">✓</span> Retornos rápidos para ajustes finales.</li>
+                    </ul>
+                </div>
+                <!-- Diferencial: Compromiso --><div class="text-center md:text-left border-l-2 border-accent/50 md:pl-8 pt-8 md:pt-0">
+                    <h2 class="text-4xl font-extrabold mb-4 text-accent">Compromiso Total</h2>
+                    <p class="text-xl text-gray-300 mb-6">
+                        No solo entregamos un archivo; entregamos tu visión. Estamos comprometidos con la <strong class="text-white">satisfacción total</strong> del artista y trabajamos sin descanso hasta alcanzar la perfección.
+                    </p>
+                    <ul class="space-y-3 text-gray-400">
+                        <li class="flex items-center justify-center md:justify-start"><span class="text-accent mr-3">✓</span> Revisiones ilimitadas (dentro de lo razonable).</li>
+                        <li class="flex items-center justify-center md:justify-start"><span class="text-accent mr-3">✓</span> Seguimiento personalizado post-entrega.</li>
+                        <li class="flex items-center justify-center md:justify-start"><span class="text-accent mr-3">✓</span> Confidencialidad y seguridad de tu material.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Tecnología --><section id="tecnologia" class="py-20 px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 font-tech">Tecnología para el Flujo Remoto</h2>
+            <div class="flex flex-col md:flex-row items-center bg-card-dark p-8 rounded-xl shadow-2xl">
+                <div class="md:w-1/2 mb-6 md:mb-0 md:pr-8">
+                    <h3 class="text-2xl font-semibold mb-4 text-accent font-tech">Colaboración en Tiempo Real (Listento)</h3>
+                    <p class="text-gray-400 mb-4 font-tech">
+                        Gracias a herramientas como **Audiomovers Listento**, podemos compartir audio de alta resolución y baja latencia directamente desde nuestro estudio a tus auriculares, estés donde estés. Es como estar sentado a nuestro lado.
+                    </p>
+                    <p class="text-gray-400 font-tech">
+                        Combinamos esto con **Zoom** o tu plataforma de videollamada preferida para discusiones detalladas y ajustes instantáneos. ¡La distancia ya no es una barrera!
+                    </p>
+                </div>
+                <div class="md:w-1/2 flex justify-center space-x-6">
+                    <!-- Placeholder de Tecnología 1 --><div class="text-center">
+                        <div class="text-6xl mb-2 text-accent flex justify-center">
+                            <!-- SVG Audiomovers Listento mejorado -->
+                            <svg class="w-16 h-16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                                <path d="M12 12v.01"></path>
+                                <path d="M12 8v.01"></path>
+                                <path d="M8 10v.01"></path>
+                                <path d="M16 10v.01"></path>
+                                <path d="M10 14v.01"></path>
+                                <path d="M14 14v.01"></path>
+                            </svg>
+                        </div>
+                        <p class="text-sm text-gray-300 font-tech mt-2">Audiomovers Listento</p>
+                    </div>
+                    <!-- Placeholder de Tecnología 2 --><div class="text-center">
+                        <div class="text-6xl mb-2 text-accent flex justify-center">
+                            <!-- SVG Zoom mejorado -->
+                            <svg class="w-16 h-16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M23 7l-7 5 7 5V7z"></path>
+                                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                            </svg>
+                        </div>
+                        <p class="text-sm text-gray-300 font-tech mt-2">Zoom/Videollamada</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Contacto y Formulario --><section id="contacto" class="py-20 px-4 sm:px-6 lg:px-8 bg-black/50">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12">Comienza tu Proyecto Hoy</h2>
+            <div class="max-w-xl mx-auto bg-card-dark p-8 rounded-xl shadow-2xl border border-accent/30">
+                <form id="contact-form" class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-300 mb-1">Nombre Completo</label>
+                        <input type="text" id="name" name="name" required class="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:ring-accent focus:border-accent transition duration-300 ai-input" placeholder="Ej. Juan Pérez">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Correo Electrónico</label>
+                        <input type="email" id="email" name="email" required class="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:ring-accent focus:border-accent transition duration-300 ai-input" placeholder="ejemplo@email.com">
+                    </div>
+                    <div>
+                        <label for="project" class="block text-sm font-medium text-gray-300 mb-1">Detalles del Proyecto</label>
+                        <div class="relative">
+                            <textarea id="project" name="project" rows="4" required class="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:ring-accent focus:border-accent transition duration-300 ai-input pr-10" placeholder="Describe tu proyecto..."></textarea>
+                            <button type="button" id="btn-refine-text" class="absolute bottom-3 right-3 text-xs bg-accent text-black px-4 py-2 rounded-full font-bold font-tech uppercase tracking-wider hover:scale-105 hover:shadow-[0_0_15px_rgba(57,255,20,0.6)] transition-all duration-300 interactive-element" title="Mejorar redacción con IA">
+                                Mejorar con IA
+                            </button>
+                        </div>
+                        <p id="ai-refine-status" class="text-xs text-accent mt-2 hidden loading-dots font-tech tracking-widest uppercase">Optimizando solicitud</p>
+                    </div>
+                    <button type="submit" class="w-full px-4 py-3 border border-transparent text-base font-medium rounded-lg text-black bg-accent hover:bg-[#20c000] transition duration-300 shadow-lg shadow-accent/50 transform hover:scale-[1.02] font-semibold interactive-element">
+                        Enviar Solicitud Rápida
+                    </button>
+                </form>
+                <div id="form-message" class="mt-4 p-3 rounded-lg text-center hidden"></div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN MEJORADA: AI CREATIVE LAB (MOVIDA AL FINAL) -->
+        <section id="ai-zone" class="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+            <div class="absolute inset-0 bg-accent/5 pointer-events-none"></div>
+            
+            <div class="max-w-4xl mx-auto relative z-10 text-center">
+                <h2 class="text-3xl sm:text-5xl font-bold mb-4 font-title-main tracking-wide">
+                    AI CREATIVE <span class="text-accent">LAB</span>
+                </h2>
+                <p class="text-gray-300 mb-12 font-tech text-lg sm:text-xl max-w-2xl mx-auto">
+                    Potencia tu inspiración con nuestro asistente de producción inteligente. Genera conceptos, vibes y estructuras para tu próximo hit en segundos.
+                </p>
+                
+                <div class="ai-panel p-8 rounded-2xl">
+                    <div class="grid md:grid-cols-2 gap-8 mb-8">
+                        <div>
+                            <label class="block text-left text-accent font-tech uppercase tracking-wider mb-3 text-sm font-bold">Género Musical</label>
+                            <input type="text" id="ai-genre" class="w-full px-5 py-4 rounded-lg ai-input text-lg" placeholder="Ej. Cyberpunk, Trap Soul, Lo-Fi...">
+                        </div>
+                        <div>
+                            <label class="block text-left text-accent font-tech uppercase tracking-wider mb-3 text-sm font-bold">Vibe / Mood</label>
+                            <input type="text" id="ai-mood" class="w-full px-5 py-4 rounded-lg ai-input text-lg" placeholder="Ej. Melancólico, Energético, Oscuro...">
+                        </div>
+                    </div>
+                    
+                    <button id="btn-generate-idea" class="w-full md:w-auto px-10 py-4 bg-accent text-black font-bold font-title-main rounded-full hover:scale-105 hover:shadow-[0_0_30px_rgba(57,255,20,0.6)] transition-all duration-300 interactive-element text-lg tracking-wide">
+                        GENERAR CONCEPTO
+                    </button>
+
+                    <div id="ai-result-container" class="mt-10 hidden text-left ai-hud-display p-8 rounded-lg relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-accent/50 shadow-[0_0_15px_#39ff14]"></div>
+                        <div id="ai-loading" class="hidden text-center py-8 text-accent loading-dots font-title-main text-2xl tracking-widest">PROCESANDO DATOS</div>
+                        <div id="ai-content" class="space-y-6 font-tech text-lg"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="mt-20 py-8 border-t border-gray-800 bg-card-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400">
+            <p>&copy; <span id="current-year"></span> MH SOUND - Producción Musical Remota.</p>
+            <p class="mt-2 text-sm">Rapidez. Compromiso. Calidad.</p>
+        </div>
+    </footer>
+
+    <script>
+        const apiKey = ""; 
+
+        function copyToClipboard(text) {
+            if (navigator.clipboard) {
+                return navigator.clipboard.writeText(text).then(() => true).catch(() => false);
+            } else {
+                try {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    textarea.style.position = 'fixed'; 
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    const successful = document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    return successful;
+                } catch (err) {
+                    return false;
+                }
+            }
+        }
+
+        async function callGemini(prompt) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const payload = { contents: [{ parts: [{ text: prompt }] }] };
+
+            let attempts = 0;
+            const maxAttempts = 3;
+            while (attempts < maxAttempts) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    const data = await response.json();
+                    return data.candidates?.[0]?.content?.parts?.[0]?.text || "No pude generar una respuesta.";
+                } catch (error) {
+                    attempts++;
+                    if (attempts >= maxAttempts) return "Error al conectar con la IA.";
+                    await new Promise(r => setTimeout(r, 1000 * Math.pow(2, attempts - 1)));
+                }
+            }
+        }
+
+        async function generateSongConcept() {
+            const genre = document.getElementById('ai-genre').value || "Cualquier género";
+            const mood = document.getElementById('ai-mood').value || "Cualquier estado de ánimo";
+            const resultContainer = document.getElementById('ai-result-container');
+            const loadingDiv = document.getElementById('ai-loading');
+            const contentDiv = document.getElementById('ai-content');
+
+            resultContainer.classList.remove('hidden');
+            loadingDiv.classList.remove('hidden');
+            contentDiv.innerHTML = '';
+
+            const prompt = `Actúa como un productor musical experto. Genera una idea conceptual para una canción: Género: "${genre}", Vibe: "${mood}". Dame el resultado en JSON estricto: {"titulo", "bpm", "instrumentos", "descripcion"}.`;
+
+            const responseText = await callGemini(prompt);
+            const cleanJson = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
+            
+            let data;
+            try {
+                data = JSON.parse(cleanJson);
+            } catch (e) {
+                data = { titulo: "Concepto Experimental", bpm: "N/A", instrumentos: "Varios", descripcion: responseText };
+            }
+
+            loadingDiv.classList.add('hidden');
+            
+            contentDiv.innerHTML = `
+                <div class="grid grid-cols-2 gap-4 border-b border-accent/20 pb-4 mb-4">
+                    <div>
+                        <p class="text-gray-400 text-xs uppercase tracking-widest mb-1">TÍTULO DEL TRACK</p>
+                        <h3 class="text-2xl font-bold text-white font-title-main tracking-wide text-accent">"${data.titulo}"</h3>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-gray-400 text-xs uppercase tracking-widest mb-1">TEMPO</p>
+                        <p class="text-3xl font-bold text-white font-tech">${data.bpm} <span class="text-sm text-gray-500">BPM</span></p>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <p class="text-accent text-xs uppercase tracking-widest mb-2 font-bold">INSTRUMENTACIÓN CLAVE</p>
+                        <p class="text-gray-300 font-tech border-l-2 border-accent pl-3 leading-relaxed">${data.instrumentos}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-400 italic font-inter text-sm leading-relaxed">"${data.descripcion}"</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function refineMessage() {
+            const textarea = document.getElementById('project');
+            const statusMsg = document.getElementById('ai-refine-status');
+            const originalText = textarea.value;
+
+            if (!originalText.trim()) return;
+
+            statusMsg.classList.remove('hidden');
+            const prompt = `Mejora esta solicitud de producción musical para que suene profesional y apasionada: "${originalText}"`;
+            const improvedText = await callGemini(prompt);
+            
+            textarea.value = improvedText.trim();
+            statusMsg.classList.add('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+            const btnGenerate = document.getElementById('btn-generate-idea');
+            if (btnGenerate) btnGenerate.addEventListener('click', generateSongConcept);
+
+            const btnRefine = document.getElementById('btn-refine-text');
+            if (btnRefine) btnRefine.addEventListener('click', refineMessage);
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const closeMenuButton = document.getElementById('close-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuItems = document.querySelectorAll('.menu-item');
+
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden'; 
+                });
+            }
+
+            const hideMenu = () => {
+                if (mobileMenu) mobileMenu.classList.add('hidden');
+                document.body.style.overflow = ''; 
+            };
+
+            if (closeMenuButton) closeMenuButton.addEventListener('click', hideMenu);
+
+            menuItems.forEach(item => {
+                item.addEventListener('click', hideMenu);
+            });
+
+            const contactForm = document.getElementById('contact-form');
+            const formMessage = document.getElementById('form-message');
+            const YOUR_EMAIL = "tucorreo@ejemplo.com"; 
+
+            function showMessage(message, type) {
+                formMessage.innerHTML = message;
+                formMessage.classList.remove('hidden', 'bg-red-900/50', 'bg-green-900/50', 'text-red-300', 'text-green-300');
+
+                if (type === 'success') {
+                    formMessage.classList.add('bg-green-900/50', 'text-green-300');
+                } else if (type === 'error') {
+                    formMessage.classList.add('bg-red-900/50', 'text-red-300');
+                }
+            }
+
+            if (contactForm) {
+                contactForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+                    const project = document.getElementById('project').value;
+
+                    if (name.trim() === "" || email.trim() === "" || project.trim() === "") {
+                        showMessage("Por favor, complete todos los campos requeridos.", "error");
+                        return;
+                    }
+
+                    const submissionText = `
+¡Nueva Solicitud de Proyecto de MH SOUND!
+---------------------------------------------
+Nombre Completo: ${name}
+Correo Electrónico: ${email}
+
+Detalles del Proyecto:
+---------------------------------------------
+${project}
+---------------------------------------------
+`;
+
+                    const isCopied = await copyToClipboard(submissionText);
+
+                    if (isCopied) {
+                        const successHtml = 
+                            '<p class="font-bold text-lg text-accent">¡Solicitud Lista!</p>' +
+                            '<p>Hemos copiado tu mensaje al portapapeles.</p>' +
+                            '<p class="mt-2">Por favor, pégalo y envíalo a nuestro email:</p>' +
+                            `<a href="mailto:${YOUR_EMAIL}" class="text-white bg-accent px-3 py-1 rounded-md mt-2 inline-block hover:underline">${YOUR_EMAIL}</a>`;
+                            
+                        showMessage(successHtml, "success");
+                        contactForm.reset();
+                    } else {
+                        const errorHtml = 
+                            '<p class="font-bold text-lg">Error de Copia (Ocurre en algunos navegadores)</p>' +
+                            '<p>No pudimos copiar el mensaje automáticamente.</p>' +
+                            '<p class="mt-2">Por favor, copia el siguiente texto manualmente y envíalo a:</p>' +
+                            `<a href="mailto:${YOUR_EMAIL}" class="text-accent hover:underline">${YOUR_EMAIL}</a>` +
+                            `<textarea class="w-full mt-3 p-2 text-sm bg-gray-900 border border-gray-700 text-gray-300" rows="6" readonly>${submissionText}</textarea>`;
+
+                        showMessage(errorHtml, "error");
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
